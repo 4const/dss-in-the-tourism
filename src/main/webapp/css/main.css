@@ -1,0 +1,21 @@
+
+.mg-bt-10 {
+    margin-bottom: 10px;
+}
+
+.search-input {
+    vertical-align: middle !important;
+
+    float: right;
+    width: 33% !important;
+    margin-top: -7px !important;
+    margin-bottom: 10px !important;
+}
+
+.selected {
+    background-color: #CDD7F7 !important;
+}
+
+.panel-title {
+    display: inline-block;
+}

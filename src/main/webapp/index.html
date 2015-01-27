@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Система поддержки принятия решений</title>
+
+	<link href="css/main.css" rel="stylesheet">
+
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/sb-admin.css" rel="stylesheet">
+	<link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<!-- Gmaps -->
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<script type="application/javascript" src="js/gmaps.js"></script>
+
+	<!-- jQuery -->
+	<script type="application/javascript" src="js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+
+	<script type="application/javascript" src="js/app.js"></script>
+</head>
+<body>
+<div id="main">
+<div id="wrapper">
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">СППР в региональном туризме</a>
+		</div>
+		<!-- Top Menu Items -->
+		<ul class="nav navbar-right top-nav">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<i class="fa fa-user"></i>
+					<span id="username">User</span>
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a>
+							<span id="userrole"></span>
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a id="logoutBtn">
+							<i class="fa fa-fw fa-power-off"></i>
+							Выйти
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<!-- Left Menu Items -->
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav side-nav">
+				<li class="active">
+					<a href="/"><i class="fa fa-fw fa-graduation-cap"></i> Объекты</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<!-- Page Heading -->
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						Объекты рекреационного потенциала
+					</h1>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="fa fa-map-marker fa-fw"></i> Объекты для проведения оценки</h3>
+						<div class="form-group input-group search-input">
+							<span class="input-group-btn">
+								<button id="searchResetBtn" class="btn btn-default" type="button">
+									<i class="fa fa-times"></i>
+								</button>
+							</span>
+							<input id="search" type="text" class="form-control">
+							<span class="input-group-btn">
+								<button id="searchBtn" class="btn btn-default" type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div>
+							<div class="mg-bt-10">
+								<div id="studentBtnPanel" class="btn-group">
+									<button id="newStudentBtn" data-toggle="modal" data-target="#studentModal" class="btn btn-default">
+										<i class="fa fa-plus fa-fw"></i> Добавить
+									</button>
+									<button id="editStudentBtn" data-toggle="modal" data-target="#studentModal" class="btn btn-default">
+										<i class="fa fa-edit fa-fw"></i> Редактировать
+									</button>
+									<button id="deleteStudentBtn" class="btn btn-default">
+										<i class="fa fa-times fa-fw"></i> Удалить
+									</button>
+								</div>
+							</div>
+							<div id="map"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="studentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden>×</button>
+				<h4 class="modal-title">Студент</h4>
+			</div>
+			<div class="modal-body">
+				<div id="studentFieldError" class="alert alert-warning fade in hidden">
+					Поля заполены неверно
+				</div>
+				<div id="studentServerError" class="alert alert-danger fade in hidden">
+					Ошибка сервера
+				</div>
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="form-group">
+						<label class="control-label">Фамилия</label>
+						<input id="lastName" type="text" class="form-control">
+					</div>
+						<div class="form-group">
+							<label class="control-label">Имя</label>
+							<input id="firstName" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Отчество</label>
+							<input id="patronymic" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label>Группа</label>
+							<select id="studentGroup" class="form-control">
+								<option>АИБМ-13</option>
+								<option>АИТМ-13</option>
+								<option>АММ-13</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Стипендия</label>
+							<input id="grant" type="number" step="1" class="form-control">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button id="saveStudentBtn" class="btn btn-primary">Сохранить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="groupModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden>×</button>
+				<h4 class="modal-title">Группа</h4>
+			</div>
+			<div class="modal-body">
+				<div id="groupFieldError" class="alert alert-warning fade in hidden">
+					Поля заполены неверно
+				</div>
+				<div id="groupServerError" class="alert alert-danger fade in hidden">
+					Ошибка сервера
+				</div>
+				<div class="form-group">
+					<label class="control-label">Назавание группы</label>
+					<input id="groupName" type="text" class="form-control">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button id="saveGroupBtn" class="btn btn-primary">Сохранить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="errorModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-danger">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden>×</button>
+				<h4 class="modal-title">Ошибка</h4>
+			</div>
+			<div class="modal-body text-warning">
+				<div>Либо группа уже не существует, либо к ней еще прикреплены студенты</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Вход в систему</h4>
+			</div>
+			<div class="modal-body">
+				<div id="loginFieldError" class="alert alert-warning fade in hidden">
+					Введенные данные неверны
+				</div>
+				<div id="loginServerError" class="alert alert-danger fade in hidden">
+					Ошибка сервера
+				</div>
+					<div class="form-group">
+						<label class="control-label">Логин</label>
+						<input id="login" type="text" class="form-control">
+					</div>
+					<div class="form-group">
+						<label class="control-label">Пароль</label>
+						<input id="password" type="password" class="form-control">
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button id="loginBtn" class="btn btn-primary">Войти</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
