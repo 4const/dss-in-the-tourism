@@ -14,9 +14,16 @@ public class ObjectType {
 
     private String name;
 
-    public ObjectType(Integer id, String name) {
+    private boolean deleted;
+
+
+    public ObjectType() {
+    }
+
+    public ObjectType(Integer id, String name, boolean deleted) {
         this.id = id;
         this.name = name;
+        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -35,23 +42,25 @@ public class ObjectType {
         this.name = name;
     }
 
+    public boolean isDeleted() {
+
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ObjectType)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof ObjectType)) return false;
 
-        ObjectType that = (ObjectType)o;
+        ObjectType that = (ObjectType) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-        if (name != null ? !name.equals(that.name) : that.name != null) {
-            return false;
-        }
+        if (deleted != that.deleted) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
     }
@@ -60,14 +69,18 @@ public class ObjectType {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (deleted ? 1 : 0);
         return result;
     }
 
     @Override
-    public String toString() {
-        return "ObjectType{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            '}';
+    public String
+    toString() {
+        final StringBuffer sb = new StringBuffer("ObjectType{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", deleted=").append(deleted);
+        sb.append('}');
+        return sb.toString();
     }
 }
