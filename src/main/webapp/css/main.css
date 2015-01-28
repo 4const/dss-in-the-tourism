@@ -1,4 +1,16 @@
 
+@media (min-width: 768px) {
+    #map {
+        height: 620px;
+    }
+}
+
+@media (max-width: 768px) {
+    #map {
+        height: 320px;
+    }
+}
+
 .mg-bt-10 {
     margin-bottom: 10px;
 }
