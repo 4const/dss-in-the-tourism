@@ -13,11 +13,9 @@ public class ObjectOfEstimation {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
     private ObjectType objType;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(nullable = false)
     private Marker marker;
 
@@ -104,7 +102,7 @@ public class ObjectOfEstimation {
     @Override
     public String
     toString() {
-        final StringBuffer sb = new StringBuffer("ObjectOfEstimation{");
+        final StringBuilder sb = new StringBuilder("ObjectOfEstimation{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", objType=").append(objType);
