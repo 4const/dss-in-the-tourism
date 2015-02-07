@@ -11,9 +11,8 @@ $(function() {
 			case MODES.NEW_MARKER_MODE:
 				$('#newMarkerBtnHelper').addClass('hidden');
 				$('#objectModal').modal('show');
+				__editedObject = emptyObject(e.latLng.lat(), e.latLng.lng());
 
-				__mode = MODES.NONE;
-				__editedObject = emptyObject(e.latLng.lat(), e.latLng.lng())
 				break;
 		}
 	}
@@ -48,12 +47,36 @@ $(function() {
 			method: 'PUT',
 			contentType: 'application/json',
 			data: JSON.stringify(__editedObject)
-		}).done(function(res) {
-			$('#objectModal').modal('toggle');
+		}).done(function(object) {
+			$('#objectModal').modal('hide');
+			addObject(object);
+			__mode = MODES.NONE;
 		}).fail(function() {
 			$('#objectServerError').removeClass('hidden');
 		});
 	}
+
+	function addObject(object) {
+		var id = object.id;
+		var marker = object.marker;
+		if (!__objects[id]) {
+            map.addMarker({
+				lat: marker.lat,
+				lng: marker.lng,
+				title: object.name,
+				icon: '/img/icon/marker.png',
+				click: function(e) {
+					alert('You clicked in this marker');
+				},
+				rightclick: function(e) {
+					alert('You RC in this marker');
+				}
+            });
+		}
+		__objects[id] = object;
+	}
+
+	var __objects = {};
 
     var __editedObject = undefined;
 
@@ -66,7 +89,20 @@ $(function() {
 	});
 
 	$('#saveObjectBtn').on('click', saveObject.bind(this));
+
+	$('#objectModal').on('hide.bs.modal', function() { __mode = MODES.NONE; });
+
+	loadMarkers(function(objects) {
+		objects.forEach(addObject.bind(this));
+	}.bind(this));
 });
+
+function loadMarkers(cb) {
+	$.ajax({
+		url: '/object',
+		method: 'GET',
+	}).done(cb);
+}
 
 function emptyObject(_lat, _lng) {
 	return {
@@ -104,7 +140,6 @@ function createMap(id, lat, lng, zoom, click, rightclick) {
 		name: 'OpenStreetMap',
 		maxZoom: 18
 	});
-	map.setMapTypeId('osm');
 
 	return map;
 }

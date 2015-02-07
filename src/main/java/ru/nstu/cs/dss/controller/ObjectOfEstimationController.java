@@ -19,22 +19,21 @@ public class ObjectOfEstimationController {
 	@Autowired
 	private ObjectService objectService;
 
+	@RequestMapping(value = "/object", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ObjectJson> getAll() {
+		return objectService.findAll().stream()
+							.map(ObjectJson.toJson)
+							.collect(Collectors.toList());
+	}
+
 	@RequestMapping(value = "/object", method = RequestMethod.PUT)
 	@ResponseBody
-	public ObjectJson save(@RequestBody ObjectJson objectJson) throws Throwable {
+	public ObjectJson save(@RequestBody ObjectJson objectJson) {
 		ObjectOfEstimation object = ObjectJson.fromJson.apply(objectJson);
 
 		objectService.save(object);
 
 		return objectJson;
-	}
-
-	@RequestMapping(value = "/object", method = RequestMethod.GET)
-	@ResponseBody
-	public List<ObjectJson> getAll() throws Throwable {
-		return objectService.findAll()
-				.stream()
-				.map(ObjectJson.toJson::apply)
-				.collect(Collectors.toList());
 	}
 }
