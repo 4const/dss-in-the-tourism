@@ -31,3 +31,7 @@
 .panel-title {
     display: inline-block;
 }
+
+div {
+	cursor: default !important;
+}

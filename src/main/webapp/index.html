@@ -98,17 +98,12 @@
 					<div class="panel-body">
 						<div>
 							<div class="mg-bt-10">
-								<div id="studentBtnPanel" class="btn-group">
-									<button id="newStudentBtn" data-toggle="modal" data-target="#studentModal" class="btn btn-default">
+								<div id="markerBtnPanel" class="btn-group">
+									<button id="newMarkerBtn" class="btn btn-default">
 										<i class="fa fa-plus fa-fw"></i> Добавить
 									</button>
-									<button id="editStudentBtn" data-toggle="modal" data-target="#studentModal" class="btn btn-default">
-										<i class="fa fa-edit fa-fw"></i> Редактировать
-									</button>
-									<button id="deleteStudentBtn" class="btn btn-default">
-										<i class="fa fa-times fa-fw"></i> Удалить
-									</button>
 								</div>
+								<span id="newMarkerBtnHelper" class="text-info bold hidden"><b>Выберите точку на карте...</b></span>
 							</div>
 							<div id="map"></div>
 						</div>
@@ -120,81 +115,42 @@
 </div>
 </div>
 
-<div id="studentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="objectModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden>×</button>
-				<h4 class="modal-title">Студент</h4>
+				<h4 class="modal-title">Объект</h4>
 			</div>
 			<div class="modal-body">
-				<div id="studentFieldError" class="alert alert-warning fade in hidden">
+				<div id="objectFieldError" class="alert alert-warning fade in hidden">
 					Поля заполены неверно
 				</div>
-				<div id="studentServerError" class="alert alert-danger fade in hidden">
+				<div id="objectServerError" class="alert alert-danger fade in hidden">
 					Ошибка сервера
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="form-group">
-						<label class="control-label">Фамилия</label>
-						<input id="lastName" type="text" class="form-control">
-					</div>
-						<div class="form-group">
-							<label class="control-label">Имя</label>
-							<input id="firstName" type="text" class="form-control">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Отчество</label>
-							<input id="patronymic" type="text" class="form-control">
+							<label class="control-label">Наименование</label>
+							<input id="objName" type="text" class="form-control">
 						</div>
 					</div>
 					<div class="col-lg-4">
 						<div class="form-group">
 							<label>Группа</label>
-							<select id="studentGroup" class="form-control">
-								<option>АИБМ-13</option>
-								<option>АИТМ-13</option>
-								<option>АММ-13</option>
+							<select id="objType" class="form-control">
+								<option value="1">Организация</option>
+								<option value="2">Кафе</option>
+								<option value="3">Ресторан</option>
 							</select>
-						</div>
-						<div class="form-group">
-							<label class="control-label">Стипендия</label>
-							<input id="grant" type="number" step="1" class="form-control">
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default" data-dismiss="modal">Отмена</button>
-				<button id="saveStudentBtn" class="btn btn-primary">Сохранить</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="groupModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden>×</button>
-				<h4 class="modal-title">Группа</h4>
-			</div>
-			<div class="modal-body">
-				<div id="groupFieldError" class="alert alert-warning fade in hidden">
-					Поля заполены неверно
-				</div>
-				<div id="groupServerError" class="alert alert-danger fade in hidden">
-					Ошибка сервера
-				</div>
-				<div class="form-group">
-					<label class="control-label">Назавание группы</label>
-					<input id="groupName" type="text" class="form-control">
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-default" data-dismiss="modal">Отмена</button>
-				<button id="saveGroupBtn" class="btn btn-primary">Сохранить</button>
+				<button id="saveObjectBtn" class="btn btn-primary">Сохранить</button>
 			</div>
 		</div>
 	</div>
