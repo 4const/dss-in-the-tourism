@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ObjectRepository extends Repository<ObjectOfEstimation, Integer> {
 
-	void save(ObjectOfEstimation object);
+	ObjectOfEstimation save(ObjectOfEstimation object);
 
 	List<ObjectOfEstimation> findAll();
 }

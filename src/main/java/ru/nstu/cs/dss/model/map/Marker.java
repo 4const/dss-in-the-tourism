@@ -1,9 +1,8 @@
 package ru.nstu.cs.dss.model.map;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import ru.nstu.cs.dss.model.object.ObjectOfEstimation;
+
+import javax.persistence.*;
 
 @Entity
 public class Marker {
@@ -16,6 +15,9 @@ public class Marker {
     private double lat;
 
     private boolean deleted;
+
+	@OneToOne(mappedBy = "marker", cascade = CascadeType.ALL)
+	private ObjectOfEstimation objectOfEstimation;
 
     public Marker() {
     }
@@ -59,7 +61,15 @@ public class Marker {
         this.deleted = deleted;
     }
 
-    @Override
+	public ObjectOfEstimation getObjectOfEstimation() {
+		return objectOfEstimation;
+	}
+
+	public void setObjectOfEstimation(ObjectOfEstimation objectOfEstimation) {
+		this.objectOfEstimation = objectOfEstimation;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Marker)) return false;

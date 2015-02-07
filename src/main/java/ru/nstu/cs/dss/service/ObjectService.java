@@ -15,8 +15,8 @@ public class ObjectService {
 	@Autowired
 	private ObjectRepository objectRepository;
 
-	public void save(ObjectOfEstimation object) {
-		objectRepository.save(object);
+	public ObjectOfEstimation save(ObjectOfEstimation object) {
+		return objectRepository.save(object);
 	}
 
 	public List<ObjectOfEstimation> findAll() {
