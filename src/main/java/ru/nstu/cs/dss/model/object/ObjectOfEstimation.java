@@ -11,13 +11,17 @@ public class ObjectOfEstimation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+	@Column(nullable = false)
     private String name;
 
     private ObjectType objType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Marker marker;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Address address;
 
     private boolean deleted;
 
@@ -25,15 +29,16 @@ public class ObjectOfEstimation {
     public ObjectOfEstimation() {
     }
 
-    public ObjectOfEstimation(Integer id, String name, ObjectType objType, Marker marker, boolean deleted) {
-        this.id = id;
-        this.name = name;
-        this.objType = objType;
-        this.marker = marker;
-        this.deleted = deleted;
-    }
+	public ObjectOfEstimation(Integer id, String name, ObjectType objType, Marker marker, Address address, boolean deleted) {
+		this.id = id;
+		this.name = name;
+		this.objType = objType;
+		this.marker = marker;
+		this.address = address;
+		this.deleted = deleted;
+	}
 
-    public Integer getId() {
+	public Integer getId() {
         return id;
     }
 
@@ -65,7 +70,15 @@ public class ObjectOfEstimation {
         this.marker = marker;
     }
 
-    public boolean isDeleted() {
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public boolean isDeleted() {
         return deleted;
     }
 
@@ -73,43 +86,59 @@ public class ObjectOfEstimation {
         this.deleted = deleted;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ObjectOfEstimation)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ObjectOfEstimation)) {
+			return false;
+		}
 
-        ObjectOfEstimation that = (ObjectOfEstimation) o;
+		ObjectOfEstimation that = (ObjectOfEstimation)o;
 
-        if (deleted != that.deleted) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (marker != null ? !marker.equals(that.marker) : that.marker != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (objType != null ? !objType.equals(that.objType) : that.objType != null) return false;
+		if (deleted != that.deleted) {
+			return false;
+		}
+		if (address != null ? !address.equals(that.address) : that.address != null) {
+			return false;
+		}
+		if (id != null ? !id.equals(that.id) : that.id != null) {
+			return false;
+		}
+		if (marker != null ? !marker.equals(that.marker) : that.marker != null) {
+			return false;
+		}
+		if (name != null ? !name.equals(that.name) : that.name != null) {
+			return false;
+		}
+		if (objType != that.objType) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (objType != null ? objType.hashCode() : 0);
-        result = 31 * result + (marker != null ? marker.hashCode() : 0);
-        result = 31 * result + (deleted ? 1 : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (objType != null ? objType.hashCode() : 0);
+		result = 31 * result + (marker != null ? marker.hashCode() : 0);
+		result = 31 * result + (address != null ? address.hashCode() : 0);
+		result = 31 * result + (deleted ? 1 : 0);
+		return result;
+	}
 
-    @Override
-    public String
-    toString() {
-        final StringBuilder sb = new StringBuilder("ObjectOfEstimation{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", objType=").append(objType);
-        sb.append(", marker=").append(marker);
-        sb.append(", deleted=").append(deleted);
-        sb.append('}');
-        return sb.toString();
-    }
-
+	@Override
+	public String toString() {
+		return "ObjectOfEstimation{" +
+			"id=" + id +
+			", name='" + name + '\'' +
+			", objType=" + objType +
+			", marker=" + marker +
+			", address=" + address +
+			", deleted=" + deleted +
+			'}';
+	}
 }
