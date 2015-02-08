@@ -2,7 +2,10 @@ package ru.nstu.cs.dss.model.object;
 
 public enum ObjectType {
 
-	COMPANY((short)1, "Органиация");
+	COMPANY((short)1, "Органиация"),
+	CAFE((short)2, "Кафе"),
+	RESTAURANT((short)3, "Ресторан"),
+	HOTEL((short)4, "Гостиница");
 
 	public final short id;
 	public final String name;

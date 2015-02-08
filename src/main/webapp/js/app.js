@@ -42,17 +42,14 @@ $(function() {
 			return false;
 		}
 
-		$.ajax({
-			url: '/object',
-			method: 'PUT',
-			contentType: 'application/json',
-			data: JSON.stringify(__editedObject)
-		}).done(function(object) {
+		REST.put('object', __editedObject, function(err, object) {
+			if (err) {
+				$('#objectServerError').removeClass('hidden');
+				return;
+			}
 			$('#objectModal').modal('hide');
 			addObject(object);
 			__mode = MODES.NONE;
-		}).fail(function() {
-			$('#objectServerError').removeClass('hidden');
 		});
 	}
 
@@ -76,6 +73,18 @@ $(function() {
 		__objects[id] = object;
 	}
 
+	function fillObjectTypes(types) {
+		var select = $('#objType');
+        select.find('option').remove();
+
+        types.forEach(function(t) {
+			var option = $('<option>');
+			option.text(t.name);
+			option.attr('value', t.id);
+			select.append(option);
+        });
+	}
+
 	var __objects = {};
 
     var __editedObject = undefined;
@@ -95,13 +104,30 @@ $(function() {
 	loadMarkers(function(objects) {
 		objects.forEach(addObject.bind(this));
 	}.bind(this));
+
+	loadObjectTypes(fillObjectTypes.bind(this));
 });
 
 function loadMarkers(cb) {
-	$.ajax({
-		url: '/object',
-		method: 'GET',
-	}).done(cb);
+	REST.get('/object', function(err, objects) {
+		if (err) {
+			alert(err);
+			return;
+		}
+
+		cb(objects);
+	});
+}
+
+function loadObjectTypes(cb) {
+	REST.get('/objectType', function(err, types) {
+		if (err) {
+			alert(err);
+			return;
+		}
+
+		cb(types);
+	});
 }
 
 function emptyObject(_lat, _lng) {
