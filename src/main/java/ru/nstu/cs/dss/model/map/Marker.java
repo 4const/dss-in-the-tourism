@@ -14,7 +14,6 @@ public class Marker {
     private double lng;
     private double lat;
 
-    private boolean deleted;
 
 	@OneToOne(mappedBy = "marker", cascade = CascadeType.ALL)
 	private ObjectOfEstimation objectOfEstimation;
@@ -22,11 +21,10 @@ public class Marker {
     public Marker() {
     }
 
-    public Marker(Integer id, double lng, double lat, boolean deleted) {
+    public Marker(Integer id, double lng, double lat) {
         this.id = id;
         this.lng = lng;
         this.lat = lat;
-        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -53,14 +51,6 @@ public class Marker {
         this.lat = lat;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
 	public ObjectOfEstimation getObjectOfEstimation() {
 		return objectOfEstimation;
 	}
@@ -70,40 +60,47 @@ public class Marker {
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Marker)) return false;
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Marker)) {
+			return false;
+		}
 
-        Marker marker = (Marker) o;
+		Marker marker = (Marker)o;
 
-        if (deleted != marker.deleted) return false;
-        if (Double.compare(marker.lng, lng) != 0) return false;
-        if (Double.compare(marker.lat, lat) != 0) return false;
-        if (id != null ? !id.equals(marker.id) : marker.id != null) return false;
+		if (Double.compare(marker.lat, lat) != 0) {
+			return false;
+		}
+		if (Double.compare(marker.lng, lng) != 0) {
+			return false;
+		}
+		if (id != null ? !id.equals(marker.id) : marker.id != null) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = id != null ? id.hashCode() : 0;
-        temp = Double.doubleToLongBits(lng);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(lat);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (deleted ? 1 : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = id != null ? id.hashCode() : 0;
+		temp = Double.doubleToLongBits(lng);
+		result = 31 * result + (int)(temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(lat);
+		result = 31 * result + (int)(temp ^ (temp >>> 32));
+		return result;
+	}
 
-    @Override
+	@Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Marker{");
         sb.append("id=").append(id);
         sb.append(", lng=").append(lng);
         sb.append(", lat=").append(lat);
-        sb.append(", deleted=").append(deleted);
         sb.append('}');
         return sb.toString();
     }

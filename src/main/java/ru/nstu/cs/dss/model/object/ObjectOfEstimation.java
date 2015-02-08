@@ -15,7 +15,7 @@ public class ObjectOfEstimation {
 
     private ObjectType objType;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Marker marker;
 

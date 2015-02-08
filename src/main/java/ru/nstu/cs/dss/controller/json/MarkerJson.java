@@ -25,5 +25,5 @@ public class MarkerJson {
 	}
 
 	public static Function<Marker, MarkerJson> toJson = m -> new MarkerJson(m.getId(), m.getLat(), m.getLng());
-	public static Function<MarkerJson, Marker> fromJson = m -> new Marker(m.id, m.lng, m.lat, false);
+	public static Function<MarkerJson, Marker> fromJson = m -> new Marker(m.id, m.lng, m.lat);
 }
