@@ -12,6 +12,9 @@ public class AddressJson {
 	public String street;
 	public String streetNumber;
 
+	public AddressJson() {
+	}
+
 	public AddressJson(String administrativeArea, String locality, String street, String streetNumber) {
 		this.administrativeArea = administrativeArea;
 		this.locality = locality;

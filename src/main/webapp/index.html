@@ -21,11 +21,12 @@
 
 	<!-- Bootstrap Core JavaScript -->
 	<script type="application/javascript" src="js/bootstrap.min.js"></script>
-
-	<script type="application/javascript" src="js/rest.js"></script>
-	<script type="application/javascript" src="js/app.js"></script>
 </head>
 <body>
+<script type="application/javascript" src="js/rest.js"></script>
+<script type="application/javascript" src="js/googleAddressService.js"></script>
+<script type="application/javascript" src="js/app.js"></script>
+
 <div id="main">
 <div id="wrapper">
 	<!-- Navigation -->
@@ -131,13 +132,13 @@
 					Ошибка сервера
 				</div>
 				<div class="row">
-					<div class="col-lg-8">
+					<div class="col-sm-8">
 						<div class="form-group">
 							<label class="control-label">Наименование</label>
 							<input id="objName" type="text" class="form-control">
 						</div>
 					</div>
-					<div class="col-lg-4">
+					<div class="col-sm-4">
 						<div class="form-group">
 							<label>Тип</label>
 							<select id="objType" class="form-control">
@@ -145,6 +146,35 @@
 								<option value="2">Кафе</option>
 								<option value="3">Ресторан</option>
 							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="checkbox">
+							<label>
+								<input id="addressChBox" type="checkbox"> <b>Адрес</b>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row hidden" id="addressRow">
+					<div class="col-sm-8">
+						<div class="form-group">
+							<label class="control-label">Область/Регион/Край</label>
+							<input id="administrativeArea" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Населеный пункт</label>
+							<input id="locality" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Улица</label>
+							<input id="street" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Номер дома</label>
+							<input id="streetNumber" type="text" class="form-control">
 						</div>
 					</div>
 				</div>

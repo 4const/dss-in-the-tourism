@@ -10,6 +10,7 @@ $(function() {
 		switch (__mode) {
 			case MODES.NEW_MARKER_MODE:
 				$('#newMarkerBtnHelper').addClass('hidden');
+				cleanObjectModal();
 				$('#objectModal').modal('show');
 				__editedObject = emptyObject(e.latLng.lat(), e.latLng.lng());
 
@@ -35,6 +36,15 @@ $(function() {
 
 		__editedObject.name = $('#objName').val();
 		__editedObject.type = $('#objType').val();
+
+		if ($('#addressChBox').is(':checked')) {
+			__editedObject.administrativeArea = $('#administrativeArea').val();
+			__editedObject.locality = $('#locality').val();
+			__editedObject.street = $('#street').val();
+			__editedObject.streetNumber = $('#streetNumber').val();
+		} else {
+			__editedObject.address = undefined;
+		}
 
 		if (!__editedObject.name ||
 			!__editedObject.type) {
@@ -85,22 +95,67 @@ $(function() {
         });
 	}
 
-	var __objects = {};
+	function showAddress() {
+		var checked = $('#addressChBox').is(':checked');
+		if (checked) {
+			if (!__editedObject.address) {
+				readAddress(__editedObject);
+			}
 
-    var __editedObject = undefined;
+			if (!!__editedObject.address) {
+				$('#administrativeArea').val(__editedObject.address.administrativeArea);
+				$('#locality').val(__editedObject.address.locality);
+				$('#street').val(__editedObject.address.street);
+				$('#streetNumber').val(__editedObject.address.streetNumber);
+			}
+			$('#addressRow').removeClass('hidden');
+		} else {
+			$('#addressRow').addClass('hidden');
+		}
+	}
 
-    var __mode = MODES.NONE;
-	var map = createMap('#map', 55.285, 80.233, 8, onMapClick.bind(this), onMapRightClick.bind(this));
+	function readAddress(object) {
+		var lat = object.marker.lat;
+		var lng = object.marker.lng;
+		GoogleAddressService.getAddress(lat, lng, function(address) {
+			object.address = address;
+		}.bind(this));
+	}
 
+	function cleanObjectModal() {
+		$('#objName').val('');
+		$('#objType').val(1);
+
+		$('#addressChBox').prop('checked', false);
+		$('#addressRow').addClass('hidden');
+		$('#administrativeArea').val('');
+        $('#locality').val('');
+        $('#street').val('');
+        $('#streetNumber').val('');
+
+		$('#objectFieldError').addClass('hidden');
+		$('#objectServerError').addClass('hidden');
+	}
+
+	// toolbar listeners
 	$('#newMarkerBtn').on('click', function() {
 		__mode = MODES.NEW_MARKER_MODE;
 		$('#newMarkerBtnHelper').removeClass('hidden');
 	});
 
+	// object modal listeners
 	$('#saveObjectBtn').on('click', saveObject.bind(this));
-
+    $('#addressChBox').change(showAddress.bind(this));
 	$('#objectModal').on('hide.bs.modal', function() { __mode = MODES.NONE; });
 
+
+	// run this shit
+	var __objects = {};
+
+	var __editedObject = undefined;
+
+	var __mode = MODES.NONE;
+	var map = createMap('#map', 55.285, 80.233, 8, onMapClick.bind(this), onMapRightClick.bind(this));
 	loadMarkers(function(objects) {
 		objects.forEach(addObject.bind(this));
 	}.bind(this));
@@ -137,6 +192,8 @@ function emptyObject(_lat, _lng) {
 			lat: _lat ? _lat : undefined,
 			lng: _lng ? _lng : undefined
 		},
+
+		address: undefined,
 
 		id: undefined,
 		name: undefined,
