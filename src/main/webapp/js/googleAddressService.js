@@ -19,10 +19,10 @@ GoogleAddressService = new function() {
 			return null;
 		}
 
-    	var administrativeArea = address[4].short_name
-        var locality = address[2].short_name
-        var street = address[1].short_name
-        var streetNumber = address[0].short_name
+    	var administrativeArea = address[4].long_name;
+        var locality = address[2].long_name;
+        var street = address[1].long_name.replace('улица ', '').replace(' улица', '');
+        var streetNumber = address[0].long_name;
 		return {
             administrativeArea: administrativeArea,
             locality: locality,

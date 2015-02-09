@@ -15,8 +15,8 @@
     margin-bottom: 10px;
 }
 
-#newMarkerBtn {
-    margin: 10px 0 10px 0;
+#addressAutoFillBtn {
+    margin: 10px 0 10px 0 !important;
 }
 
 .search-input {

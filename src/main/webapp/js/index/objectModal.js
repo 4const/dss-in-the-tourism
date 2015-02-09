@@ -40,8 +40,14 @@ var ObjectModal = function(saveCallback) {
             this.__editedObject.address = undefined;
         }
 
+		var address = this.__editedObject.address;
         if (!this.__editedObject.name ||
-            !this.__editedObject.type) {
+            !this.__editedObject.type ||
+			address && (
+				!address.administrativeArea ||
+				!address.locality ||
+				!address.street ||
+				!address.streetNumber)) {
             $('#objectFieldError').removeClass('hidden');
             return false;
         }
@@ -67,14 +73,14 @@ var ObjectModal = function(saveCallback) {
                 $('#street').val(this.__editedObject.address.street);
                 $('#streetNumber').val(this.__editedObject.address.streetNumber);
             }
-            $('#addressAutofillBtn').removeClass('hidden');
+            $('#addressAutoFillBtn').removeClass('hidden');
             $('#addressRow').removeClass('hidden');
         } else {
             $('#addressRow').addClass('hidden');
         }
     }
 
-    this.__autofillAddress = function(e) {
+    this.__autoFillAddress = function(e) {
         var lat = this.__editedObject.marker.lat;
         var lng = this.__editedObject.marker.lng;
         GoogleAddressService.getAddress(lat, lng, function(address) {
@@ -97,7 +103,7 @@ var ObjectModal = function(saveCallback) {
 
         $('#addressChBox').prop('checked', false);
         $('#addressRow').addClass('hidden');
-        $('#addressAutofillBtn').addClass('hidden');
+        $('#addressAutoFillBtn').addClass('hidden');
 
         $('#administrativeArea').val('');
         $('#locality').val('');
@@ -110,8 +116,7 @@ var ObjectModal = function(saveCallback) {
 
 
     $('#saveObjectBtn').on('click', this.__saveObject.bind(this));
-    $('#addressAutofillBtn').on('click', this.__autofillAddress.bind(this));
+    $('#addressAutoFillBtn').on('click', this.__autoFillAddress.bind(this));
 
-    $('#addressAutofillBtn').on('click', this.__saveObject.bind(this));
     $('#addressChBox').change(this.__showAddress.bind(this));
 };
