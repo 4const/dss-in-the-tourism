@@ -15,6 +15,10 @@
     margin-bottom: 10px;
 }
 
+#newMarkerBtn {
+    margin: 10px 0 10px 0;
+}
+
 .search-input {
     vertical-align: middle !important;
 

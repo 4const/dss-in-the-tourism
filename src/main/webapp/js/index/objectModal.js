@@ -61,28 +61,34 @@ var ObjectModal = function(saveCallback) {
     this.__showAddress = function() {
         var checked = $('#addressChBox').is(':checked');
         if (checked) {
-            if (!this.__editedObject.address) {
-                this.__readAddress(this.__editedObject);
-            }
-
             if (!!this.__editedObject.address) {
                 $('#administrativeArea').val(this.__editedObject.address.administrativeArea);
                 $('#locality').val(this.__editedObject.address.locality);
                 $('#street').val(this.__editedObject.address.street);
                 $('#streetNumber').val(this.__editedObject.address.streetNumber);
             }
+            $('#addressAutofillBtn').removeClass('hidden');
             $('#addressRow').removeClass('hidden');
         } else {
             $('#addressRow').addClass('hidden');
         }
     }
 
-    this.__readAddress = function(object) {
-        var lat = object.marker.lat;
-        var lng = object.marker.lng;
+    this.__autofillAddress = function(e) {
+        var lat = this.__editedObject.marker.lat;
+        var lng = this.__editedObject.marker.lng;
         GoogleAddressService.getAddress(lat, lng, function(address) {
-            object.address = address;
+            this.__editedObject.address = address;
         }.bind(this));
+
+        if (!!this.__editedObject.address) {
+            $('#administrativeArea').val(this.__editedObject.address.administrativeArea);
+            $('#locality').val(this.__editedObject.address.locality);
+            $('#street').val(this.__editedObject.address.street);
+            $('#streetNumber').val(this.__editedObject.address.streetNumber);
+        }
+
+        e.stopPropagation();
     }
 
     this.__cleanFields = function() {
@@ -91,6 +97,8 @@ var ObjectModal = function(saveCallback) {
 
         $('#addressChBox').prop('checked', false);
         $('#addressRow').addClass('hidden');
+        $('#addressAutofillBtn').addClass('hidden');
+
         $('#administrativeArea').val('');
         $('#locality').val('');
         $('#street').val('');
@@ -102,5 +110,8 @@ var ObjectModal = function(saveCallback) {
 
 
     $('#saveObjectBtn').on('click', this.__saveObject.bind(this));
+    $('#addressAutofillBtn').on('click', this.__autofillAddress.bind(this));
+
+    $('#addressAutofillBtn').on('click', this.__saveObject.bind(this));
     $('#addressChBox').change(this.__showAddress.bind(this));
 };
