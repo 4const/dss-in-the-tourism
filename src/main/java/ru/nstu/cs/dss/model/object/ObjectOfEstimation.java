@@ -14,6 +14,7 @@ public class ObjectOfEstimation {
 	@Column(nullable = false)
     private String name;
 
+	@Column(nullable = false)
     private ObjectType objType;
 
     @OneToOne(cascade = CascadeType.ALL)

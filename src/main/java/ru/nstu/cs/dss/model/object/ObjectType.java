@@ -16,10 +16,13 @@ public enum ObjectType {
 	}
 
 	public static ObjectType byId(short id) {
-		switch (id) {
-			case 1: return COMPANY;
+		ObjectType[] types = ObjectType.values();
+
+		int i = id - 1;
+		if (i < 0 || i > types.length) {
+			return null;
 		}
 
-		return null;
+		return types[i];
 	}
 }
