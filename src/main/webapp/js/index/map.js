@@ -35,7 +35,11 @@ function createMap(id, lat, lng, zoom, click, rightclick) {
         },
 
         click: click,
-        rightclick: rightclick
+        rightclick: rightclick,
+
+		markerClusterer: function(map) {
+			return new MarkerClusterer(map, [], { maxZoom: 12, gridSize: 15 });
+		}
     });
 
 	map.addMapType('osm', {

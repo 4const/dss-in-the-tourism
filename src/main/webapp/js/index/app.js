@@ -1,9 +1,7 @@
 $(function() {
     var MODES = {
         NONE: 0,
-        NEW_MARKER_MODE: 1,
-        EDIT_MARKER_MODE: 2,
-        VIEW_MARKER_MODE: 3
+        NEW_MARKER_MODE: 1
     };
     var __mode = MODES.NONE;
 
@@ -44,11 +42,13 @@ $(function() {
     	};
     }
 
-    function addObject(object) {
+    function addObject(object, marker) {
+		if (marker) {
+			marker.setMap(null);
+		}
         var id = object.id;
-        if (!__objects[id]) {
-            map.addObject(object);
-        }
+		map.addObject(object);
+
         __objects[id] = object;
     }
 
@@ -65,7 +65,9 @@ $(function() {
 
     function fillMap() {
         loadMarkers(function(objects) {
-            objects.forEach(addObject.bind(this));
+            objects.forEach(function(o) {
+            	addObject(o);
+			}.bind(this));
         }.bind(this));
     }
 
@@ -102,11 +104,11 @@ $(function() {
     }
 
     function editObj(object, marker) {
-        var i = 0;
+        objectModal.show(object, marker);
     }
 
     function viewObj(object) {
-        var i = 0;
+		objectModal.show(object, null, true);
     }
 
     // toolbar listeners

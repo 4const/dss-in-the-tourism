@@ -2,14 +2,17 @@ var ObjectModal = function(saveCallback) {
     this.__view = false;
 
     this.__editedObject = null;
+    this.__mapMarker = null;
 
     this.__saveCallback = saveCallback;
 
-    this.show = function(object, viewMode) {
+    this.show = function(object, mapMarker, viewMode) {
         this.__view = !!viewMode;
         this.__editedObject = object;
+        this.__mapMarker = mapMarker;
 
-        this.__cleanFields();
+        this.__fillFields(object);
+        this.__viewMode(viewMode);
         $('#objectModal').modal('show');
     }
 
@@ -62,7 +65,7 @@ var ObjectModal = function(saveCallback) {
                 }
                 $('#objectModal').modal('hide');
 
-                this.__saveCallback(object);
+                this.__saveCallback(object, this.__mapMarker);
             }.bind(this));
     }
 
@@ -99,23 +102,41 @@ var ObjectModal = function(saveCallback) {
         e.stopPropagation();
     }
 
-    this.__cleanFields = function() {
-        $('#objName').val('');
-        $('#objType').val(1);
+    this.__fillFields = function(object) {
+        $('#objName').val(object.name);
+        $('#objType').val(object.type);
 
-        $('#addressChBox').prop('checked', false);
-        $('#addressRow').addClass('hidden');
-        $('#addressAutoFillBtn').addClass('hidden');
+		var address = object.address ? object.address : {};
+		$('#addressChBox').prop('checked', !!object.address);
+        if (!!object.address) {
+        	$('#addressRow').removeClass('hidden');
+        	$('#addressAutoFillBtn').removeClass('hidden');
+        } else {
+        	$('#addressRow').addClass('hidden');
+        	$('#addressAutoFillBtn').addClass('hidden');
+        }
 
-        $('#administrativeArea').val('');
-        $('#locality').val('');
-        $('#street').val('');
-        $('#streetNumber').val('');
+        $('#administrativeArea').val(address.administrativeArea);
+        $('#locality').val(address.locality);
+        $('#street').val(address.street);
+        $('#streetNumber').val(address.streetNumber);
 
         $('#objectFieldError').addClass('hidden');
         $('#objectServerError').addClass('hidden');
     }
 
+    this.__viewMode = function(view) {
+        view = !!view;
+        $('#objectModal').find('input').prop('disabled', view);
+        $('#objectModal').find('select').prop('disabled', view);
+
+        if (view) {
+        	$('#objectModal').find('.modal-footer').addClass('hidden');
+			$('#addressAutoFillBtn').addClass('hidden');
+        } else {
+        	$('#objectModal').find('.modal-footer').removeClass('hidden');
+        }
+    }
 
     $('#saveObjectBtn').on('click', this.__saveObject.bind(this));
     $('#addressAutoFillBtn').on('click', this.__autoFillAddress.bind(this));

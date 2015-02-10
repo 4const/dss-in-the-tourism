@@ -39,3 +39,7 @@
 div {
 	cursor: default !important;
 }
+
+input[disabled], select[disabled] {
+	cursor: default !important;
+}
