@@ -32,8 +32,8 @@ public class ObjectOfEstimationController {
 	public ObjectJson save(@RequestBody ObjectJson objectJson) {
 		ObjectOfEstimation object = ObjectJson.fromJson.apply(objectJson);
 
-		objectService.save(object);
+		ObjectOfEstimation saved = objectService.save(object);
 
-		return objectJson;
+		return ObjectJson.toJson.apply(saved);
 	}
 }

@@ -1,14 +1,16 @@
 var ObjectModal = function(saveCallback) {
+    this.__view = false;
 
     this.__editedObject = null;
 
     this.__saveCallback = saveCallback;
 
-    this.show = function(object) {
+    this.show = function(object, viewMode) {
+        this.__view = !!viewMode;
         this.__editedObject = object;
+
         this.__cleanFields();
         $('#objectModal').modal('show');
-
     }
 
     this.fillObjectTypes = function(types) {

@@ -63,6 +63,12 @@ $(function() {
     	});
     }
 
+    function fillMap() {
+        loadMarkers(function(objects) {
+            objects.forEach(addObject.bind(this));
+        }.bind(this));
+    }
+
     function loadObjectTypes(cb) {
     	REST.get('/objectType', function(err, types) {
     		if (err) {
@@ -74,6 +80,35 @@ $(function() {
     	});
     }
 
+    function createMarkerInfo(object, marker) {
+        var info = new google.maps.InfoWindow({
+            content:
+                '<h4>'+ object.name +'</h4>'+
+                '<div>'+
+                    '<p><b>Тип: </b>' + __objectTypes[object.type] + '</p>' +
+                    '<div class="btn-group">' +
+                        '<button id="editObjectBtn" class="btn btn-default btn-xs">Редактировать</button>' +
+                        '<button id="viewObjectBtn" class="btn btn-info btn-xs">Просмотр</button>' +
+                    '</div>' +
+                '</div>'
+        });
+
+        google.maps.event.addListener(info, 'domready', function() {
+            $('#editObjectBtn').on('click', editObj.bind(this, object, marker));
+            $('#viewObjectBtn').on('click', viewObj.bind(this, object));
+        }.bind(this));
+
+        return info;
+    }
+
+    function editObj(object, marker) {
+        var i = 0;
+    }
+
+    function viewObj(object) {
+        var i = 0;
+    }
+
     // toolbar listeners
     $('#newMarkerBtn').on('click', function() {
         __mode = MODES.NEW_MARKER_MODE;
@@ -81,13 +116,17 @@ $(function() {
     });
 
     var __objects = {};
+    var __objectTypes = {};
 
-    var map = new Map(onMapClick.bind(this), onMapRightClick.bind(this));
+    var map = new Map(createMarkerInfo.bind(this), onMapClick.bind(this), onMapRightClick.bind(this));
     var objectModal = new ObjectModal(addObject.bind(this));
 
-    loadMarkers(function(objects) {
-        objects.forEach(addObject.bind(this));
+    loadObjectTypes(function(types) {
+        types.forEach(function(t) {
+            __objectTypes[t.id] = t.name;
+        });
+        objectModal.fillObjectTypes(types);
     }.bind(this));
 
-    loadObjectTypes(objectModal.fillObjectTypes);
+    fillMap();
 });
